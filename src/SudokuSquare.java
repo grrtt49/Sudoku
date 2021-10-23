@@ -3,6 +3,13 @@ public class SudokuSquare {
 
     public SudokuSquare(int height, int width) {
         square = new int[height][width];
+        /*int count = 1;
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
+                square[y][x] = count;
+                count++;
+            }
+        }*/
     }
 
     public int[][] getSquare() {
@@ -22,6 +29,6 @@ public class SudokuSquare {
     }
 
     public void insertNumber(int x, int y, int number) {
-        square[x][y] = number;
+        square[y][x] = number;
     }
 }
