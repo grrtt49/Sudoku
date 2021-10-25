@@ -30,6 +30,25 @@ public class SudokuBoard {
         }
     }
 
+    public SudokuBoard(String boardStr) {
+        this();
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < boardStr.length(); i++) {
+            char c = boardStr.charAt(i);
+            int n = 0;
+            if(c != '.')
+                n = Integer.parseInt(boardStr.charAt(i) + "");
+
+            insertNumber(x, y, n);
+            x++;
+            if(x > 8) {
+                x = 0;
+                y++;
+            }
+        }
+    }
+
     public int getNumber(int x, int y) {
         int squareX = x / squareWidth;
         int squareY = y / squareHeight;
@@ -141,6 +160,22 @@ public class SudokuBoard {
         x /= squareWidth;
         y /= squareHeight;
         return board[y][x].getSquareArr();
+    }
+
+    public boolean hasEmptySquare() {
+        for(int sy = 0; sy < squareHeight; sy++) {
+            for(int sx = 0; sx < squareWidth; sx++) {
+                for(int y = 0; y < height; y++) {
+                    for(int x = 0; x < width; x++) {
+                        int n = getNumber(sx * squareWidth + x, sy * squareHeight + y);
+                        if(n == 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
