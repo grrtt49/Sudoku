@@ -1,6 +1,6 @@
-package SudokuSolver;
+package SudokuLogic.SudokuSolver;
 
-import Sudoku.SudokuBoard;
+import SudokuLogic.SudokuBoard;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,32 +8,13 @@ import java.util.Set;
 
 public class SudokuSolver {
     private SudokuBoard board;
-    private int count;
-    private double time;
 
-    public SudokuSolver(SudokuBoard board) {
-        this.board = board;
-    }
-
-    public SudokuBoard solve() {
-        long startTime = System.nanoTime();
-        count = 0;
+    public SudokuBoard solve(SudokuBoard board) {
         solveRec(0, 0, board.clone());
-        long endTime = System.nanoTime();
-        time = (endTime - startTime) / 1000000.0;
-        return board;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public double getTime() {
-        return time;
+        return this.board;
     }
 
     private boolean solveRec(int x, int y, SudokuBoard testBoard) {
-        count++;
 
         //go to next row if x is too large
         if(x > 8) {

@@ -1,7 +1,7 @@
-package SudokuCreator;
+package SudokuLogic.SudokuCreator;
 
-import Sudoku.SudokuBoard;
-import SudokuSolver.SudokuSolutionCounter;
+import SudokuLogic.SudokuBoard;
+import SudokuLogic.SudokuSolver.SudokuSolutionCounter;
 
 import java.util.*;
 
@@ -13,11 +13,10 @@ public class SudokuCreator {
         board = new SudokuBoard();
     }
 
-    public SudokuBoard create() {
+    public void create() {
         setUpRandom();
         generateRec(0, 0, board.clone());
         createPuzzle(board.clone());
-        return puzzle;
     }
 
     public SudokuBoard getSolution() {
@@ -75,10 +74,9 @@ public class SudokuCreator {
 
     private void createPuzzle(SudokuBoard testBoard) {
         SudokuSolutionCounter counter = new SudokuSolutionCounter();
-        int count = 0;
         int numAdded = 1;
 
-        while(count < 64 && numAdded > 0) {//28
+        while(numAdded > 0) {//28
             numAdded = 0;
             ArrayList<Integer[]> positions = getRandPositions();
             for (Integer[] pos : positions) {
@@ -87,21 +85,17 @@ public class SudokuCreator {
                 int previousNumber = testBoard.getNumber(x, y);
                 if(previousNumber != 0) {
                     testBoard.insertNumber(x, y, 0);
-                    count++;
                     numAdded++;
 
                     Set<Integer> available = availableNumbers(x, y, testBoard);
                     if (available.size() != 1) {
                         testBoard.insertNumber(x, y, previousNumber);
-                        count--;
                         numAdded--;
                     }
                 }
             }
         }
 
-        double totalTime = 0;
-        int totalChecks = 0;
         ArrayList<Integer[]> positions = getRandPositions();
         for (Integer[] pos : positions) {
             int x = pos[0];
@@ -109,20 +103,11 @@ public class SudokuCreator {
             int previousNumber = testBoard.getNumber(x, y);
             if(previousNumber != 0) {
                 testBoard.insertNumber(x, y, 0);
-                if(!counter.isMultipleSolutions(testBoard)) {
-                    System.out.println(x + ", " + y + " was changed from " + previousNumber);
-                    count++;
-                }
-                else {
+                if(counter.isMultipleSolutions(testBoard)) {
                     testBoard.insertNumber(x, y, previousNumber);
                 }
-                totalTime += counter.getTime();
-                totalChecks++;
             }
         }
-
-        System.out.println("Total removed: " + count);
-        System.out.println("Average check time: " + (totalTime / totalChecks));
 
         puzzle = testBoard.clone();
     }
@@ -135,8 +120,8 @@ public class SudokuCreator {
                 positions.add(new Integer[]{x, y});
             }
         }
-        Collections.shuffle(positions);
 
+        Collections.shuffle(positions);
         return positions;
     }
 

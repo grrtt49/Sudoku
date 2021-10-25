@@ -1,4 +1,4 @@
-package Sudoku;
+package SudokuLogic;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,18 +8,6 @@ public class SudokuSquare {
 
     public SudokuSquare(int height, int width) {
         square = new int[height][width];
-    }
-
-    private SudokuSquare(int[][] square) {
-        this.square = square;
-    }
-
-    public void setSquare(int[][] square) {
-        this.square = square;
-    }
-
-    public int[][] getSquare() {
-        return square;
     }
 
     public int[] getSquareArr() {

@@ -1,16 +1,14 @@
-package Sudoku;
+package SudokuLogic;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class SudokuBoard {
     private SudokuSquare[][] board;
-    private int height;
-    private int width;
-    private int squareHeight;
-    private int squareWidth;
+    private final int height;
+    private final int width;
+    private final int squareHeight;
+    private final int squareWidth;
 
     public SudokuBoard() {
         this(3, 3, 3, 3);
@@ -176,6 +174,14 @@ public class SudokuBoard {
             }
         }
         return false;
+    }
+
+    public int[][] toArray() {
+        int[][] array = new int[squareHeight * height][];
+        for(int y = 0; y < squareHeight * height; y++) {
+            array[y] = getRow(y);
+        }
+        return array;
     }
 
     @Override

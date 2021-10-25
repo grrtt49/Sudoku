@@ -1,6 +1,6 @@
-package SudokuSolver;
+package SudokuLogic.SudokuSolver;
 
-import Sudoku.SudokuBoard;
+import SudokuLogic.SudokuBoard;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,19 +8,10 @@ import java.util.Set;
 
 public class SudokuSolutionCounter {
     private int solutions;
-    private double time;
-
-    public SudokuSolutionCounter() {}
 
     public boolean isMultipleSolutions(SudokuBoard board) {
         solutions = 0;
-        long startTime = System.nanoTime();
-        //SudokuBoard easyBoard = findEasy(board.clone());
-        //System.out.println("Easy board: \n" + easyBoard);
         solveRec(0, 0, board.clone());
-        long endTime = System.nanoTime();
-        time = (endTime - startTime) / 1000000.0;
-        System.out.println("Found " + solutions + " solutions in " + time + " milliseconds.");
         return solutions > 1;
     }
 
@@ -41,16 +32,6 @@ public class SudokuSolutionCounter {
             }
         } while(added);
         return board;
-    }
-
-    public double getTime() {
-        return time;
-    }
-
-    public int numSolutions(SudokuBoard board) {
-        solutions = 0;
-        solveRec(0, 0, board.clone());
-        return solutions;
     }
 
     private void solveRec(int x, int y, SudokuBoard board) {

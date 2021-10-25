@@ -1,13 +1,10 @@
 package Test;
 
-import Sudoku.SudokuBoard;
-import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.*;
+import SudokuLogic.SudokuBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLOutput;
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidityTest {
     private SudokuBoard board;
