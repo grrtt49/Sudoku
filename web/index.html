@@ -20,9 +20,20 @@
                             $(".sudokuBoard").append("<div>" + board[y][x] + "</div>");
                         }
                         else {
-                            $(".sudokuBoard").append("<div></div>");
+                            $(".sudokuBoard").append("<div><input type='text' class='sudokuInput'></div>");
+                        }
+
+                        if(x % 3 == 2 && x != board.length - 1) {
+                            $(".sudokuBoard").append("<div class='boxGap'></div>");
                         }
                     }
+
+                    if(y % 3 == 2 && y != board.length - 1) {
+                        for(var i = 0; i < 11; i++) {
+                            $(".sudokuBoard").append("<div class='rowGap'></div>");
+                        }
+                    }
+
                 }
             }
         </script>
@@ -33,14 +44,44 @@
 
             .sudokuBoard {
                  display: grid;
-                 grid-template-columns: repeat(9, 50px);
+                 grid-template-columns: repeat(3, 50px) 3px repeat(3, 50px) 3px repeat(3, 50px);
+                 width: 455px;
+                 margin: 0 auto;
+                 border: 2px solid black;
+                 border-right: 3px solid black;
             }
 
-            .sudokuBoard > div {
+            .sudokuBoard > div:not(.boxGap):not(.rowGap) {
                 height: 50px;
                 line-height: 50px;
                 text-align:center;
                 border: 1px solid black;
+                margin: 0 -1px 0 0;
+                font-size: 40px;
+            }
+
+            .boxGap {
+                width: 3px;
+                background-color: black;
+            }
+
+            .rowGap {
+                height: 3px;
+                background-color: black;
+            }
+
+            .sudokuBoard > div:not(.boxGap):not(.rowGap):hover {
+                background-color: #eee;
+            }
+
+            .sudokuInput {
+                border: none;
+                background: transparent;
+                outline: none;
+                font-size: 40px;
+                text-align: center;
+                width:45px;
+                color: #842ddb;
             }
         </style>
     </head>
