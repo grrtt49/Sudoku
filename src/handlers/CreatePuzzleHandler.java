@@ -3,6 +3,7 @@ package handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import results.CreatePuzzleResult;
 import results.Result;
 import services.CreatePuzzleService;
 
@@ -20,12 +21,13 @@ public class CreatePuzzleHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        System.out.println("Starting create puzzle handler");
         boolean success = false;
 
         try {
-            if (exchange.getRequestMethod().equalsIgnoreCase("post")) {
+            if (exchange.getRequestMethod().equalsIgnoreCase("get")) {
                 CreatePuzzleService service = new CreatePuzzleService();
-                Result result = service.create();
+                CreatePuzzleResult result = service.create();
 
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 Writer resBody = new OutputStreamWriter(exchange.getResponseBody());

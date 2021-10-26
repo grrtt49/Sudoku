@@ -28,6 +28,10 @@ public class FileHandler implements HttpHandler {
         }
         else {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+            OutputStream respBody = exchange.getResponseBody();
+            File notFound = new File("web/HTML/404.html");
+            Files.copy(notFound.toPath(), respBody);
+            respBody.close();
         }
     }
 }

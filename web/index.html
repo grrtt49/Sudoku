@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            function getPuzzle(){
+                console.log("Getting puzzle...");
+                $.get("/create_puzzle", function(r){
+                    var puzzle = JSON.parse(r);
+                    console.log(puzzle);
+                    createSudoku(puzzle['puzzle']);
+                });
+            }
+
+            function createSudoku(board) {
+            console.log("Running display script");
+                for(var y = 0; y < board.length; y++) {
+                    for(var x = 0; x < board.length; x++) {
+                        if(board[y][x] != 0) {
+                            $(".sudokuBoard").append("<div>" + board[y][x] + "</div>");
+                        }
+                        else {
+                            $(".sudokuBoard").append("<div></div>");
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            html {
+                font-family: Helvetica;
+            }
+
+            .sudokuBoard {
+                 display: grid;
+                 grid-template-columns: repeat(9, 50px);
+            }
+
+            .sudokuBoard > div {
+                height: 50px;
+                line-height: 50px;
+                text-align:center;
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="text-align: center">Sudoku</h1>
+        <button onclick="getPuzzle();">Create Sudoku</button>
+        <div class="sudokuBoard"></div>
+    </body>
+</html>
