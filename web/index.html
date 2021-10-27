@@ -3,24 +3,144 @@
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
+            var selected = false;
+            var mouseDown = false;
+            var ctrlDown = false;
+            var editableSelected = [];
+            var currentPuzzle;
+            var currentSolution;
+
+            $(document).ready(function() {
+
+                $(document).on("mouseup", function() {
+                    mouseDown = false;
+                });
+
+                $(document).on("mousedown", function() {
+                    mouseDown = true;
+                });
+
+                $(document).on("mouseenter", ".numberSpace", function() {
+                    if(selected && mouseDown) {
+                        $(this).addClass("selected");
+                    }
+                });
+
+                $(document).on("mousedown", ".numberSpace", function(e) {
+                    e.stopPropagation();
+                    if(!ctrlDown && selected) {
+                        $(".numberSpace").removeClass("selected");
+                        selected = false;
+                    }
+
+                    if($(this).hasClass("selected")) {
+                        $(this).addClass("selected");
+                        selected = true;
+                        mouseDown = true;
+                    }
+                });
+
+                $(document).on("dblclick", ".numberSpace", function(e) {
+                    var num = parseInt($(this).text());
+                    if(!Number.isNaN(num)) {
+                        selectAllOfNumber(num);
+                    }
+                });
+
+                $(document).on("mousedown", function() {
+                    if(!ctrlDown && selected) {
+                        $(".numberSpace").removeClass("selected");
+                        selected = false;
+                    }
+                });
+
+                $(document).on("keydown", function(e) {
+                    ctrlDown = e.ctrlKey;
+
+                    if(selected && !mouseDown) {
+                        $(".selected").each(function(index, value) {
+                            if(this.id.includes("editable")) {
+                                var char = event.which || event.keyCode || event.key;
+                                if(char >= 97 && char <= 105) {
+                                    char -= 48;
+                                }
+
+                                if(char >= 49 && char <= 57) {
+                                    if(ctrlDown) {
+                                        e.preventDefault();
+                                        miniNumber(this, String.fromCharCode(char));
+                                    }
+                                    else {
+                                        $(this).css('font-size', 40);
+                                        $(this).text(String.fromCharCode(char));
+                                    }
+                                }
+                                else if(char == 8 || char == 46) {
+                                    $(this).text("");
+                                }
+                            }
+                        });
+                    }
+                });
+
+                $(document).on("keyup", function(){
+                    ctrlDown = false;
+                });
+            });
+
+            function miniNumber(el, miniNum) {
+                console.log($(el).css('font-size'));
+                var currentNumber = parseInt($(el).text());
+
+                //if the current number is blank or it's already a small letter block
+                if(Number.isNaN(currentNumber) || $(el).css('font-size') == '16px') {
+                    $(el).css('font-size', 16);
+                    $(el).text(setOfNumbers($(el).text(), miniNum));
+                }
+            }
+
+            function setOfNumbers(str, newNum) {
+                var set = [];
+                var deleted = false;
+                for(var i = 0; i < str.length; i++) {
+                    var num = parseInt(str.charAt(i));
+                    if(num != newNum) {
+                        set.push(num);
+                    }
+                    else {
+                        deleted = true;
+                    }
+                }
+                if(!deleted) {
+                    set.push(newNum);
+                }
+                set.sort();
+
+                var txt = "";
+                for(var i = 0; i < set.length; i++) {
+                    txt += set[i];
+                }
+                return txt;
+            }
+
             function getPuzzle(){
-                console.log("Getting puzzle...");
                 $.get("/create_puzzle", function(r){
                     var puzzle = JSON.parse(r);
-                    console.log(puzzle);
-                    createSudoku(puzzle['puzzle']);
+                    createSudoku(puzzle['puzzle'], puzzle['solution']);
                 });
             }
 
-            function createSudoku(board) {
-            console.log("Running display script");
+            function createSudoku(board, solution) {
+                $(".sudokuBoard").empty();
+                currentPuzzle = board;
+                currentSolution = solution;
                 for(var y = 0; y < board.length; y++) {
                     for(var x = 0; x < board.length; x++) {
                         if(board[y][x] != 0) {
-                            $(".sudokuBoard").append("<div>" + board[y][x] + "</div>");
+                            $(".sudokuBoard").append("<div class='numberSpace'>" + board[y][x] + "</div>");
                         }
                         else {
-                            $(".sudokuBoard").append("<div><input type='text' class='sudokuInput'></div>");
+                            $(".sudokuBoard").append("<div id='editable" + x + "_" + y + "' class='numberSpace editable'></div>"); //<input type='text' class='sudokuInput'>
                         }
 
                         if(x % 3 == 2 && x != board.length - 1) {
@@ -35,6 +155,53 @@
                     }
 
                 }
+            }
+
+            function getBoard() {
+                var board = [];
+                var y = -1;
+                var x = 0;
+                $(".numberSpace").each(function(index, value){
+                    if(index % 9 == 0) {
+                        board.push([]);
+                        y++;
+                        x = 0;
+                    }
+                    var number = parseInt($(this).text());
+                    if(!Number.isNaN(number)) {
+                        board[y][x] = number;
+                    }
+                    else {
+                        board[y][x] = 0;
+                    }
+                    x++;
+                });
+                return board;
+            }
+
+            function checkSudoku(board, solution) {
+                for(var y = 0; y < board.length; y++) {
+                    for(var x = 0; x < board.length; x++) {
+                        if(board[y][x] != solution[y][x]) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            function checkCurrentSudoku() {
+                return checkSudoku(getBoard(), currentSolution);
+            }
+
+            function selectAllOfNumber(n) {
+                $(".numberSpace").each(function(index, value){
+                    var number = parseInt($(this).text());
+                    if(number == n) {
+                       $(this).addClass("selected");
+                        selected = true;
+                    }
+                });
             }
         </script>
         <style>
@@ -51,7 +218,7 @@
                  border-right: 3px solid black;
             }
 
-            .sudokuBoard > div:not(.boxGap):not(.rowGap) {
+            .sudokuBoard > .numberSpace {
                 height: 50px;
                 line-height: 50px;
                 text-align:center;
@@ -70,10 +237,6 @@
                 background-color: black;
             }
 
-            .sudokuBoard > div:not(.boxGap):not(.rowGap):hover {
-                background-color: #eee;
-            }
-
             .sudokuInput {
                 border: none;
                 background: transparent;
@@ -83,11 +246,30 @@
                 width:45px;
                 color: #842ddb;
             }
+
+            .selected {
+                background-color: #ff9;
+            }
+
+            .editable {
+                color: #ac00e6;
+            }
+
+            .noselect {
+              -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Safari */
+                 -khtml-user-select: none; /* Konqueror HTML */
+                   -moz-user-select: none; /* Old versions of Firefox */
+                    -ms-user-select: none; /* Internet Explorer/Edge */
+                        user-select: none; /* Non-prefixed version, currently
+                                              supported by Chrome, Edge, Opera and Firefox */
+            }
         </style>
     </head>
     <body>
         <h1 style="text-align: center">Sudoku</h1>
         <button onclick="getPuzzle();">Create Sudoku</button>
-        <div class="sudokuBoard"></div>
+        <button onclick="if(checkCurrentSudoku()) alert('You got it correct!'); else alert('Sorry, not quite right.');">Check Sudoku</button>
+        <div class="sudokuBoard noselect"></div>
     </body>
 </html>

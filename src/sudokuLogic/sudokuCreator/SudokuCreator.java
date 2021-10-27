@@ -1,7 +1,7 @@
-package SudokuLogic.SudokuCreator;
+package sudokuLogic.sudokuCreator;
 
-import SudokuLogic.SudokuBoard;
-import SudokuLogic.SudokuSolver.SudokuSolutionCounter;
+import sudokuLogic.SudokuBoard;
+import sudokuLogic.sudokuSolver.SudokuSolutionCounter;
 
 import java.util.*;
 

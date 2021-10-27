@@ -1,6 +1,6 @@
 package Test;
 
-import SudokuLogic.SudokuBoard;
+import sudokuLogic.SudokuBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

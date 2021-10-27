@@ -1,5 +1,5 @@
-import SudokuLogic.SudokuBoard;
-import SudokuLogic.SudokuCreator.SudokuCreator;
+import sudokuLogic.SudokuBoard;
+import sudokuLogic.sudokuCreator.SudokuCreator;
 
 import java.util.Arrays;
 

@@ -1,6 +1,6 @@
-package SudokuLogic.SudokuSolver;
+package sudokuLogic.sudokuSolver;
 
-import SudokuLogic.SudokuBoard;
+import sudokuLogic.SudokuBoard;
 
 import java.util.HashSet;
 import java.util.List;
