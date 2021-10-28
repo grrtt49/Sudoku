@@ -3,116 +3,32 @@
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="scripts/script.js"></script>
-        <style>
-            html {
-                font-family: Helvetica;
-            }
-
-            .sudokuBoard {
-                 display: grid;
-                 grid-template-columns: repeat(3, 50px) 3px repeat(3, 50px) 3px repeat(3, 50px);
-                 width: 455px;
-                 margin: 0 auto;
-                 border: 2px solid black;
-                 border-right: 3px solid black;
-            }
-
-            .sudokuBoard > .numberSpace {
-                height: 50px;
-                line-height: 50px;
-                text-align:center;
-                border: 1px solid black;
-                margin: 0 -1px 0 0;
-                font-size: 40px;
-            }
-
-            .boxGap {
-                width: 3px;
-                background-color: black;
-            }
-
-            .rowGap {
-                height: 3px;
-                background-color: black;
-            }
-
-            .sudokuInput {
-                border: none;
-                background: transparent;
-                outline: none;
-                font-size: 40px;
-                text-align: center;
-                width:45px;
-                color: #842ddb;
-            }
-
-            .selected {
-                background-color: #ff9;
-            }
-
-            .editable {
-                color: #ac00e6;
-            }
-
-            .noselect {
-              -webkit-touch-callout: none; /* iOS Safari */
-                -webkit-user-select: none; /* Safari */
-                 -khtml-user-select: none; /* Konqueror HTML */
-                   -moz-user-select: none; /* Old versions of Firefox */
-                    -ms-user-select: none; /* Internet Explorer/Edge */
-                        user-select: none; /* Non-prefixed version, currently
-                                              supported by Chrome, Edge, Opera and Firefox */
-            }
-
-            .colorChoice {
-                width: 30px;
-                height: 30px;
-                display: block;
-                margin: 5px;
-            }
-
-            .colorPanel {
-                display: flex;
-                justify-content: space-evenly;
-                flex-wrap: wrap;
-                width: 175px;
-                background-color: #ddd;
-                padding: 15px;
-            }
-
-            .loadingSymbol {
-                margin: 0 auto;
-              border: 16px solid #f3f3f3; /* Light grey */
-              border-top: 16px solid #3498db; /* Blue */
-              border-radius: 50%;
-              width: 120px;
-              height: 120px;
-              animation: spin 2s linear infinite;
-            }
-
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-        </style>
+        <link rel="stylesheet" href="styles/style.css">
+        <link id='dark-theme-sheet' rel="stylesheet" href="styles/light-theme.css">
         <meta charset="UTF-8">
     </head>
     <body>
         <h1 style="text-align: center">Sudoku</h1>
         <div class="loadingSymbol" hidden></div>
-        <div class="sudokuBoard noselect" hidden></div>
         <button onclick="getPuzzle();">Create Sudoku</button>
         <button onclick="if(checkCurrentSudoku()) alert('You got it correct!'); else alert('Sorry, not quite right.');">Check Sudoku</button>
+
+        <div class="sudokuBoard noselect" hidden></div>
         <div class="colorPanel">
-            <button><span class='colorChoice' style='background-color: #f00;'></span></button>
-            <button><span class='colorChoice' style='background-color: #0f0;'></span></button>
-            <button><span class='colorChoice' style='background-color: #00f;'></span></button>
-            <button><span class='colorChoice' style='background-color: #ff0;'></span></button>
-            <button><span class='colorChoice' style='background-color: #f0f;'></span></button>
-            <button><span class='colorChoice' style='background-color: #00f;'></span></button>
-            <button><span class='colorChoice' style='background-color: #0ff;'></span></button>
-            <button><span class='colorChoice' style='background-color: #fff;'></span></button>
+            <button><span class='colorChoice' style='background-color: #f55;'></span></button>
+            <button><span class='colorChoice' style='background-color: #5f5;'></span></button>
+            <button><span class='colorChoice' style='background-color: #55f;'></span></button>
+            <button><span class='colorChoice yellow'></span></button>
+            <button><span class='colorChoice' style='background-color: #f5f;'></span></button>
+            <button><span class='colorChoice' style='background-color: #55f;'></span></button>
+            <button><span class='colorChoice' style='background-color: #5ff;'></span></button>
+            <button><span class='colorChoice default-color'></span></button>
             <button><span class='colorChoice' style='background-color: #ddd;'></span></button>
+            Night Mode:
+            <label class="switch">
+                <input id='dark-theme-toggle' type="checkbox">
+                <span class="slider round"></span>
+            </label>
         </div>
     </body>
 </html>

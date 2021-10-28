@@ -7,6 +7,13 @@ var currentSolution;
 
 $(document).ready(function() {
 
+    if($("#dark-theme-toggle").is(":checked")) {
+        $("#dark-theme-sheet").attr("href", "styles/dark-theme.css");
+    }
+    else {
+        $("#dark-theme-sheet").attr("href", "styles/light-theme.css");
+    }
+
     $(document).on("mouseup", function() {
         mouseDown = false;
     });
@@ -86,8 +93,18 @@ $(document).ready(function() {
     });
 
     $(".colorPanel button").mousedown(function(e){
+        //TODO: change to class
         e.stopPropagation();
         setColors($(this).find(".colorChoice").css("background-color"));
+    });
+
+    $("#dark-theme-toggle").click(function(){
+        if($(this).is(":checked")) {
+            $("#dark-theme-sheet").attr("href", "styles/dark-theme.css");
+        }
+        else {
+            $("#dark-theme-sheet").attr("href", "styles/light-theme.css");
+        }
     });
 });
 
@@ -211,6 +228,7 @@ function selectAllOfNumber(n) {
 
 function setColors(color) {
     $(".selected").each(function(){
+        //TODO: change it to classes
         $(this).css("background-color", color);
     });
 }

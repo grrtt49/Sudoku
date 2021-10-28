@@ -1,0 +1,36 @@
+.default-color {
+    background-color: #fff;
+}
+
+.yellow {
+    background-color: #ffa;
+}
+
+.boxGap {
+    background-color: black;
+}
+
+.rowGap {
+    background-color: black;
+}
+
+.selected {
+    box-shadow: -5px -5px #ff5 inset,  5px 5px #ff5 inset;
+}
+
+.editable {
+    color: #ac00e6;
+}
+
+.colorPanel {
+    background-color: #ddd;
+}
+
+.sudokuBoard > .numberSpace {
+    border: 1px solid black;
+}
+
+.sudokuBoard {
+     border: 2px solid black;
+     border-right: 3px solid black;
+}
