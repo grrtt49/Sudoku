@@ -3,12 +3,36 @@ body {
     background-color: #333;
 }
 
-.default-color {
+.bg-default-color {
     background-color: #333;
 }
 
-.yellow {
+.bg-red {
+    background-color: #f55;
+}
+
+.bg-green {
+    background-color: #5f5;
+}
+
+.bg-blue {
+    background-color: #55f;
+}
+
+.bg-yellow {
     background-color: #ffd700;
+}
+
+.bg-pink {
+    background-color: #f5f;
+}
+
+.bg-light-blue {
+    background-color: #5ff;
+}
+
+.bg-grey {
+    background-color: #ddd;
 }
 
 .boxGap {

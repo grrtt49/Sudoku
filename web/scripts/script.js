@@ -93,9 +93,9 @@ $(document).ready(function() {
     });
 
     $(".colorPanel button").mousedown(function(e){
-        //TODO: change to class
         e.stopPropagation();
-        setColors($(this).find(".colorChoice").css("background-color"));
+        var colorClass = $(this).find(".colorChoice").attr('class').split(' ')[1];
+        setColors(colorClass);
     });
 
     $("#dark-theme-toggle").click(function(){
@@ -228,7 +228,19 @@ function selectAllOfNumber(n) {
 
 function setColors(color) {
     $(".selected").each(function(){
-        //TODO: change it to classes
-        $(this).css("background-color", color);
+        var sameClassRemoved = false;
+        var classes = $(this).attr('class').split(' ');
+        for(var i = 0; i < classes.length; i++) {
+            if(classes[i].includes("bg-")) {
+                if(classes[i] == color) {
+                    sameClassRemoved = true;
+                }
+                $(this).removeClass(classes[i]);
+            }
+        }
+
+        if(!sameClassRemoved) {
+            $(this).addClass(color);
+        }
     });
 }

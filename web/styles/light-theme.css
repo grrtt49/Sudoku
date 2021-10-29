@@ -1,9 +1,33 @@
-.default-color {
+.bg-default-color {
     background-color: #fff;
 }
 
-.yellow {
+.bg-red {
+    background-color: #f55;
+}
+
+.bg-green {
+    background-color: #5f5;
+}
+
+.bg-blue {
+    background-color: #55f;
+}
+
+.bg-yellow {
     background-color: #ffa;
+}
+
+.bg-pink {
+    background-color: #f5f;
+}
+
+.bg-light-blue {
+    background-color: #5ff;
+}
+
+.bg-grey {
+    background-color: #ddd;
 }
 
 .boxGap {
