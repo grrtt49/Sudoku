@@ -7,6 +7,23 @@ var defaultTab = "#number-tab";
 var editableSelected = [];
 var currentPuzzle;
 var currentSolution;
+var startDate;
+var timer;
+
+
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
+}
+
+//TODO: Timer
 
 $(document).ready(function() {
 
@@ -68,18 +85,15 @@ $(document).ready(function() {
         if(selected && !mouseDown) {
             var char = e.which || e.keyCode || e.key;
             $(".selected").each(function(index, value) {
-                if(this.id.includes("editable")) {
-                    
-                    if(char >= 97 && char <= 105) {
-                        char -= 48;
-                    }
+                if(char >= 97 && char <= 105) {
+                    char -= 48;
+                }
 
-                    if(char >= 49 && char <= 57) {
-                        changeSquare(char, this, e);
-                    }
-                    else if(char == 8 || char == 46) {
-                        $(this).text("");
-                    }
+                if(char >= 49 && char <= 57) {
+                    changeSquare(char, this, e);
+                }
+                else if((char == 8 || char == 46) && this.id.includes("editable")) {
+                    $(this).text("");
                 }
             });
             changed = char;
@@ -154,7 +168,7 @@ function changeSquare(char, el, event) {
                 event.preventDefault();
                 cornerNumber(el, key);
             }
-            else {
+            else if(el.id.includes("editable")) {
                 $(el).removeClass("corner-square");
                 $(el).css('font-size', 40);
                 $(el).text(key);
@@ -164,27 +178,27 @@ function changeSquare(char, el, event) {
 }
 
 function cornerNumber(element, cornerNum) {
-    if($(element).css('font-size') != "40px" || $(element).text() == "" || $(element).hasClass("corner-square")) {
-        $(element).addClass("corner-square");
-        var currentNums = "";
-        $(element).children().each(function() {
-            currentNums += $(this).text();
-        });
+    if(element.id.includes("editable")) {
+        if($(element).css('font-size') != "40px" || $(element).text() == "" || $(element).hasClass("corner-square")) {
+            $(element).addClass("corner-square");
+            var currentNums = "";
+            $(element).children().each(function() {
+                currentNums += $(this).text();
+            });
 
-        var numberString = setOfNumbers(currentNums, cornerNum); 
-        $(element).empty();
-        var order = [0, 4, 1, 
-                     6, 8, 7, 
-                     2, 5, 3];
-        for(var i = 0; i < order.length; i++) {
-            var index = order[i];
-            if(numberString.length <= index) {
-                console.log("index: " + index);
-                $(element).append("<span></span>");
-            }
-            else {
-                console.log("index: " + index + " is " + numberString.charAt(index))
-                $(element).append("<span>" + numberString.charAt(index) + "</span>");
+            var numberString = setOfNumbers(currentNums, cornerNum); 
+            $(element).empty();
+            var order = [0, 4, 1, 
+                         6, 8, 7, 
+                         2, 5, 3];
+            for(var i = 0; i < order.length; i++) {
+                var index = order[i];
+                if(numberString.length <= index) {
+                    $(element).append("<span></span>");
+                }
+                else {
+                    $(element).append("<span>" + numberString.charAt(index) + "</span>");
+                }
             }
         }
     }
@@ -192,6 +206,7 @@ function cornerNumber(element, cornerNum) {
 
 function setColorFromKey(num) {
     var colorClass = $("#color-" + num + " span").attr('class').split(" ")[1];
+    console.log("changing color: " + colorClass);
     setColors(colorClass);
 }
 
@@ -225,13 +240,14 @@ function selectTab(el) {
 }
 
 function miniNumber(el, miniNum) {
-    console.log($(el).css('font-size'));
-    var currentNumber = parseInt($(el).text());
+    if(el.id.includes("editable")) {
+        var currentNumber = parseInt($(el).text());
 
-    //if the current number is blank or it's already a small letter block
-    if(Number.isNaN(currentNumber) || $(el).css('font-size') == '16px') {
-        $(el).css('font-size', 16);
-        $(el).text(setOfNumbers($(el).text(), miniNum));
+        //if the current number is blank or it's already a small letter block
+        if(Number.isNaN(currentNumber) || $(el).css('font-size') == '16px') {
+            $(el).css('font-size', 16);
+            $(el).text(setOfNumbers($(el).text(), miniNum));
+        }
     }
 }
 
@@ -265,6 +281,8 @@ function getPuzzle(){
         $('.loadingSymbol').hide(); 
         var puzzle = JSON.parse(r);
         createSudoku(puzzle['puzzle'], puzzle['solution']);
+        startDate = new Date;
+        timer = setInterval(updateTimer, 1000);
     });
 }
 
@@ -377,4 +395,8 @@ function selectIncorrect() {
 
         x++;
     });
+}
+
+function updateTimer() {
+    $("#timer").text(Math.round((new Date() - startDate) / 1000).toString().toHHMMSS());
 }
