@@ -10,25 +10,73 @@
     <body>
         <h1 style="text-align: center">Sudoku</h1>
         <div class="loadingSymbol" hidden></div>
-        <button onclick="getPuzzle();">Create Sudoku</button>
-        <button onclick="if(checkCurrentSudoku()) alert('You got it correct!'); else alert('Sorry, not quite right.');">Check Sudoku</button>
 
-        <div class="sudokuBoard noselect" hidden></div>
-        <div class="colorPanel">
-            <button><span class='colorChoice bg-red'></span></button>
-            <button><span class='colorChoice bg-green'></span></button>
-            <button><span class='colorChoice bg-blue'></span></button>
-            <button><span class='colorChoice bg-yellow'></span></button>
-            <button><span class='colorChoice bg-pink'></span></button>
-            <button><span class='colorChoice bg-blue'></span></button>
-            <button><span class='colorChoice bg-light-blue'></span></button>
-            <button><span class='colorChoice bg-default-color'></span></button>
-            <button><span class='colorChoice bg-grey'></span></button>
-            Night Mode:
-            <label class="switch">
-                <input id='dark-theme-toggle' type="checkbox">
-                <span class="slider round"></span>
-            </label>
+        <div id="board-container">
+            <div class="sudokuBoard noselect" style='visibility:hidden;'></div>
+            <div class="colorPanel">
+                <div class='tabs'>
+                    <div id='number-tab' class='tab selected-tab' name='number-container'>9</div>
+                    <div id='center-number-tab' class='tab' name='center-number-container'>12</div>
+                    <div id='corner-number-tab' class='tab' name='corner-number-container'>1 2</div>
+                    <div id='color-tab' class='tab' name='color-container'>Colors</div>
+                </div>
+                <div class='btn-container number-container'>
+                    <button id='number-1' class='number-btn'>1</button>
+                    <button id='number-2' class='number-btn'>2</button>
+                    <button id='number-3' class='number-btn'>3</button>
+                    <button id='number-4' class='number-btn'>4</button>
+                    <button id='number-5' class='number-btn'>5</button>
+                    <button id='number-6' class='number-btn'>6</button>
+                    <button id='number-7' class='number-btn'>7</button>
+                    <button id='number-8' class='number-btn'>8</button>
+                    <button id='number-9' class='number-btn'>9</button>
+                </div>
+                <div class='btn-container center-number-container' style='display:none;'>
+                    <button id='center-number-1' class='center-number-btn'>1</button>
+                    <button id='center-number-2' class='center-number-btn'>2</button>
+                    <button id='center-number-3' class='center-number-btn'>3</button>
+                    <button id='center-number-4' class='center-number-btn'>4</button>
+                    <button id='center-number-5' class='center-number-btn'>5</button>
+                    <button id='center-number-6' class='center-number-btn'>6</button>
+                    <button id='center-number-7' class='center-number-btn'>7</button>
+                    <button id='center-number-8' class='center-number-btn'>8</button>
+                    <button id='center-number-9' class='center-number-btn'>9</button>
+                </div>
+                <div class='btn-container corner-number-container' style='display:none;'>
+                    <button id='corner-number-1' class='corner-number-btn'><span>1</span></button>
+                    <button id='corner-number-2' class='corner-number-btn'><span>2</span></button>
+                    <button id='corner-number-3' class='corner-number-btn'><span>3</span></button>
+                    <button id='corner-number-4' class='corner-number-btn'><span>4</span></button>
+                    <button id='corner-number-5' class='corner-number-btn'><span>5</span></button>
+                    <button id='corner-number-6' class='corner-number-btn'><span>6</span></button>
+                    <button id='corner-number-7' class='corner-number-btn'><span>7</span></button>
+                    <button id='corner-number-8' class='corner-number-btn'><span>8</span></button>
+                    <button id='corner-number-9' class='corner-number-btn'><span>9</span></button>
+                </div>
+                <div class='btn-container color-container' style='display:none;'>
+                    <button id='color-1' class='color-btn'><span class='colorChoice bg-red'></span></button>
+                    <button id='color-2' class='color-btn'><span class='colorChoice bg-green'></span></button>
+                    <button id='color-3' class='color-btn'><span class='colorChoice bg-blue'></span></button>
+                    <button id='color-4' class='color-btn'><span class='colorChoice bg-yellow'></span></button>
+                    <button id='color-5' class='color-btn'><span class='colorChoice bg-pink'></span></button>
+                    <button id='color-6' class='color-btn'><span class='colorChoice bg-blue'></span></button>
+                    <button id='color-7' class='color-btn'><span class='colorChoice bg-light-blue'></span></button>
+                    <button id='color-8' class='color-btn'><span class='colorChoice bg-grey'></span></button>
+                    <button id='color-9' class='color-btn'><span class='colorChoice bg-default-color'></span></button>
+                </div>
+                <div id='night-mode-switch'>
+                    Night Mode:
+                    <label class="switch">
+                        <input id='dark-theme-toggle' type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class='icon-btn-container'>
+                    <img onclick="if(checkCurrentSudoku()) alert('You got it correct!'); else alert('Sorry, not quite right.');" src="images/tick-symbol.png" title="Check for correctness" class='icon-btn'>
+                    <img onclick="getPuzzle();" src="images/add-plus.png" title="Start a new Sudoku puzzle" class='icon-btn'>
+                    <img onclick="selectIncorrect();" src="images/question-mark-round.png" title="Select all incorrectly marked squares" class='icon-btn'>
+                </div>
+            </div>
         </div>
     </body>
 </html>

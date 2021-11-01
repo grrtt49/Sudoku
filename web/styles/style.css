@@ -2,6 +2,37 @@ html {
     font-family: Helvetica;
 }
 
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.icon-btn-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+}
+
+.corner-square {
+  display: grid;
+  grid-template-columns: repeat(3, 33.3%);
+  grid-template-rows: repeat(3, 33.3%);
+}
+
+.corner-square span {
+  font-size: 14px;
+  height: 100%;
+  width: 100%;
+  line-height: 19px;
+}
+
+#board-container {
+  display: grid;
+  grid-template-columns: minmax(500px, 60%) auto;
+}
+
 .sudokuBoard {
      display: grid;
      grid-template-columns: repeat(3, 50px) 3px repeat(3, 50px) 3px repeat(3, 50px);
@@ -43,11 +74,117 @@ html {
 }
 
 .colorPanel {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    width: 175px;
+    width: 200px;
     padding: 15px;
+    height: 350px;
+    border-radius: 20px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.tab {
+  display: inline-block;
+  padding: 10px;
+  background-color: #999;
+  border: 1px solid #444;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 18px;
+  margin-top: -1px;
+  cursor: pointer;
+  color: black;
+}
+
+.selected-tab {
+  margin-top: 0px;
+  background-color: #bbb;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background-color: #bbb;
+  border: 1px solid #444;
+  margin-top: -1px;
+  padding: 10px;
+  height: 160px;
+}
+
+.color-container button {
+  height: 50px;
+}
+
+.number-btn {
+  height: 50px;
+  width: 56px;
+  font-size: 40px;
+}
+
+.center-number-btn {
+  height: 50px;
+  width: 56px;
+  font-size: 16px;
+}
+
+.corner-number-btn {
+  height: 50px;
+  width: 56px;
+  font-size: 16px;
+  position: relative;
+}
+
+.corner-number-btn span {
+  position: absolute;
+}
+
+#corner-number-1 span {
+  left: 5px;
+  top: 5px;
+}
+
+#corner-number-2 span {
+  left: 20px;
+  top: 5px;
+}
+
+#corner-number-3 span {
+  right: 5px;
+  top: 5px;
+}
+
+#corner-number-4 span {
+  left: 5px;
+  top: 14px;
+}
+
+#corner-number-5 span {
+  position: relative;
+}
+
+#corner-number-6 span {
+  right: 5px;
+  top: 14px;
+}
+
+#corner-number-7 span {
+  left: 5px;
+  bottom: 5px;
+}
+
+#corner-number-8 span {
+  left: 20px;
+  bottom: 5px;
+}
+
+#corner-number-9 span {
+  right: 5px;
+  bottom: 5px;
 }
 
 .loadingSymbol {
@@ -128,3 +265,8 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+#night-mode-switch {
+  padding: 10px;
+  height: 35px;
+  line-height: 35px;
+}

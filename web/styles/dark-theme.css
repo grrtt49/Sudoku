@@ -8,15 +8,15 @@ body {
 }
 
 .bg-red {
-    background-color: #f55;
+    background-color: #d00;
 }
 
 .bg-green {
-    background-color: #5f5;
+    background-color: #0d0;
 }
 
 .bg-blue {
-    background-color: #55f;
+    background-color: #00d;
 }
 
 .bg-yellow {
@@ -24,15 +24,15 @@ body {
 }
 
 .bg-pink {
-    background-color: #f5f;
+    background-color: #d0d;
 }
 
 .bg-light-blue {
-    background-color: #5ff;
+    background-color: #0dd;
 }
 
 .bg-grey {
-    background-color: #ddd;
+    background-color: #bbb;
 }
 
 .boxGap {
@@ -52,7 +52,7 @@ body {
 }
 
 .colorPanel {
-    background-color: #ddd;
+    background-color: #555;
 }
 
 .sudokuBoard > .numberSpace {

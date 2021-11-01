@@ -1,6 +1,9 @@
 var selected = false;
 var mouseDown = false;
 var ctrlDown = false;
+var shiftDown = false;
+var changed = 0;
+var defaultTab = "#number-tab";
 var editableSelected = [];
 var currentPuzzle;
 var currentSolution;
@@ -60,39 +63,35 @@ $(document).ready(function() {
     });
 
     $(document).on("keydown", function(e) {
-        ctrlDown = e.ctrlKey;
+        checkKeyTabs(e);
 
         if(selected && !mouseDown) {
+            var char = e.which || e.keyCode || e.key;
             $(".selected").each(function(index, value) {
                 if(this.id.includes("editable")) {
-                    var char = event.which || event.keyCode || event.key;
+                    
                     if(char >= 97 && char <= 105) {
                         char -= 48;
                     }
 
                     if(char >= 49 && char <= 57) {
-                        if(ctrlDown) {
-                            e.preventDefault();
-                            miniNumber(this, String.fromCharCode(char));
-                        }
-                        else {
-                            $(this).css('font-size', 40);
-                            $(this).text(String.fromCharCode(char));
-                        }
+                        changeSquare(char, this, e);
                     }
                     else if(char == 8 || char == 46) {
                         $(this).text("");
                     }
                 }
             });
+            changed = char;
         }
     });
 
-    $(document).on("keyup", function(){
-        ctrlDown = false;
+    $(document).on("keyup", function(e){
+        checkKeyTabs(e);
+        changed = 0;
     });
 
-    $(".colorPanel button").mousedown(function(e){
+    $(".color-container .color-btn").mousedown(function(e){
         e.stopPropagation();
         var colorClass = $(this).find(".colorChoice").attr('class').split(' ')[1];
         setColors(colorClass);
@@ -106,7 +105,124 @@ $(document).ready(function() {
             $("#dark-theme-sheet").attr("href", "styles/light-theme.css");
         }
     });
+
+    $(".tab").mousedown(function(e){
+        e.stopPropagation();
+        defaultTab = "#" + $(this).attr('id');
+        selectTab($(this));
+    });
+
+    $(".number-btn, .center-number-btn, .corner-number-btn").mousedown(function(e) {
+        e.stopPropagation();
+        var char = Number.parseInt($(this).text()) + 48;
+        $(".selected").each(function() {
+            if(this.id.includes("editable")) {
+                changeSquare(char, this, e);
+            }
+        });
+    });
 });
+
+function changeSquare(char, el, event) {
+    key = String.fromCharCode(char);
+    if(changed != char) {
+        if(ctrlDown && shiftDown) {
+            $(el).removeClass("corner-square");
+            event.preventDefault();
+            setColorFromKey(key);
+        }
+        else if(ctrlDown) {
+            $(el).removeClass("corner-square");
+            event.preventDefault();
+            miniNumber(el, key);
+        }
+        else if(shiftDown) {
+            event.preventDefault();
+            cornerNumber(el, key);
+        }
+        else {
+            if(defaultTab == "#color-tab") {
+                event.preventDefault();
+                setColorFromKey(key);
+            }
+            else if(defaultTab == "#center-number-tab") {
+                $(el).removeClass("corner-square");
+                event.preventDefault();
+                miniNumber(el, key);
+            }
+            else if(defaultTab == "#corner-number-tab") {
+                event.preventDefault();
+                cornerNumber(el, key);
+            }
+            else {
+                $(el).removeClass("corner-square");
+                $(el).css('font-size', 40);
+                $(el).text(key);
+            }
+        }
+    }
+}
+
+function cornerNumber(element, cornerNum) {
+    if($(element).css('font-size') != "40px" || $(element).text() == "" || $(element).hasClass("corner-square")) {
+        $(element).addClass("corner-square");
+        var currentNums = "";
+        $(element).children().each(function() {
+            currentNums += $(this).text();
+        });
+
+        var numberString = setOfNumbers(currentNums, cornerNum); 
+        $(element).empty();
+        var order = [0, 4, 1, 
+                     6, 8, 7, 
+                     2, 5, 3];
+        for(var i = 0; i < order.length; i++) {
+            var index = order[i];
+            if(numberString.length <= index) {
+                console.log("index: " + index);
+                $(element).append("<span></span>");
+            }
+            else {
+                console.log("index: " + index + " is " + numberString.charAt(index))
+                $(element).append("<span>" + numberString.charAt(index) + "</span>");
+            }
+        }
+    }
+}
+
+function setColorFromKey(num) {
+    var colorClass = $("#color-" + num + " span").attr('class').split(" ")[1];
+    setColors(colorClass);
+}
+
+function checkKeyTabs(e) {
+    ctrlDown = e.ctrlKey;
+    shiftDown = e.shiftKey;
+    if(ctrlDown && shiftDown) {
+        selectTab($("#color-tab"));
+    }
+    else if(ctrlDown) {
+        selectTab($("#center-number-tab"));
+    }
+    else if(shiftDown) {
+        selectTab($("#corner-number-tab"));
+    }
+    else {
+        selectTab($(defaultTab));
+    }
+}
+
+function selectTab(el) {
+    $(".tab").each(function(index, value) {
+        $(this).removeClass("selected-tab");
+        var hideClass = $(this).attr("name");
+        $("." + hideClass).css("display", "none");
+    });
+
+    el.addClass("selected-tab");
+    var showClass = el.attr("name");
+    $("." + showClass).css("display", "flex");
+}
 
 function miniNumber(el, miniNum) {
     console.log($(el).css('font-size'));
@@ -176,7 +292,7 @@ function createSudoku(board, solution) {
             }
         }
     }
-    $(".sudokuBoard").show();
+    $(".sudokuBoard").css('visibility', 'visible');
 }
 
 function getBoard() {
@@ -242,5 +358,23 @@ function setColors(color) {
         if(!sameClassRemoved) {
             $(this).addClass(color);
         }
+    });
+}
+
+function selectIncorrect() {
+    var y = -1;
+    var x = 0;
+    $(".numberSpace").each(function(index, value){
+        if(index % 9 == 0) {
+            y++;
+            x = 0;
+        }
+        var number = parseInt($(this).text());
+
+        if(!Number.isNaN(number) && number != currentSolution[y][x]) {
+            $(this).addClass("selected");
+        }
+
+        x++;
     });
 }
